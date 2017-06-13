@@ -4,6 +4,9 @@
   <!-- First launch the kinect2 bridge -->
   <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" />
 
+  <!-- run the tf transformation -->
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 1.4 0 1 0 0 base kinect2_base_link 100" />
+
   <!-- automatically run --> 
   <node pkg="apriltags_ros" type="apriltag_detector_node" name="apriltag_detector" output="screen">
     <!-- Remap topic required by the node to custom topics -->
@@ -14,7 +17,7 @@
     <param name="image_transport" type="str" value="compressed" />
 
     <!-- Select the tag family: 16h5, 25h7, 25h9, 36h9, or 36h11(default) -->
-    <param name="tag_family" type="str" value="36h11" />
+    <param name="tag_family" type="str" value="16h5" />
 
     <!-- Enable projected optical measurements for more accurate tag transformations -->
     <!-- This exists for backwards compatability and should be left true for new setups -->
@@ -22,12 +25,8 @@
 
     <!-- Describe the tags -->
     <rosparam param="tag_descriptions">[
-      {id: 0, size: 0.163513},
-      {id: 1, size: 0.163513, frame_id: a_frame},
-      {id: 2, size: 0.163513, frame_id: tag_2},
-      {id: 3, size: 0.163513},
-      {id: 4, size: 0.163513},
-      {id: 5, size: 0.163513}]
+      {id: 0, size: 0.045}
+    ]
     </rosparam>
   </node>
 </launch>

@@ -4,7 +4,8 @@ Python Interfaces for perception system used in the Assitive Robots Lab at CMU.
 
 Maintainer: Zhi (zhi.tan (@t) ri.cmu.edu)
 
-Version: 0.0.1
+Version: 0.0.2  
+[Changelog](changelog.md)
 
 ## Current Modules
 
