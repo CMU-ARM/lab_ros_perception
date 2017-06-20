@@ -32,7 +32,7 @@ def main():
     tf_buffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tf_buffer)
     r = rospy.Rate(5)
-
+    
     while True:
         pose = tag_module.getPoseForID(0, duration=rospy.Duration(4.0), frame_id='base')
         if pose is not None:

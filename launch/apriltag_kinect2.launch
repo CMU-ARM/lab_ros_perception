@@ -5,7 +5,7 @@
   <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" />
 
   <!-- run the tf transformation -->
-  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 1.4 0 1 0 0 base kinect2_base_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 1.4 1 0 0 0 base kinect2_base_link 100" />
 
   <!-- automatically run --> 
   <node pkg="apriltags_ros" type="apriltag_detector_node" name="apriltag_detector" output="screen">
@@ -25,7 +25,7 @@
 
     <!-- Describe the tags -->
     <rosparam param="tag_descriptions">[
-      {id: 0, size: 0.045}
+      {id: 0, size: 0.045, frame_id: base}
     ]
     </rosparam>
   </node>

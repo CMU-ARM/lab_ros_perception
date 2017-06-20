@@ -5,22 +5,20 @@ from apriltags_ros.msg import AprilTagDetectionArray
 import time
 import tf2_ros
 import tf2_geometry_msgs
+import numpy as np
+
 
 class AprilTagModule(object):
     """Wrapper for AprilTag Node
-    
     Wrapper for AprilTag Node, provide easy methods to check for april tag items
 
     """
-
     def __init__(self):
-        rospy.Subscriber('/tag_detections',AprilTagDetectionArray,self._tagCallback)
-        
+        rospy.Subscriber('/tag_detections', AprilTagDetectionArray, self._tagCallback)
         #dict that stored all seen tags
         self.detected_tags = {}
         self._tf_buffer = tf2_ros.Buffer()
         listener = tf2_ros.TransformListener(self._tf_buffer)
-        
 
     def _tagCallback(self, msg):
 
@@ -95,7 +93,7 @@ class AprilTagModule(object):
         
         pose_list = []
         for id_ in ids:
-            pose_list.append(self.getPoseForID(id_))
+            pose_list.append(self.getPoseForID(id_, duration, frame_id))
         return pose_list
     
     def checkID(self, id_):
@@ -132,4 +130,10 @@ class AprilTagModule(object):
         else:
             rospy.loginfo("ID never been seen")
             return None
+    
+    def waitForID(self, id, timeout=0):
+
+        r = rospy.Rate(10)
+        while id not in self.detected_tags:
+            r.sleep()
         
