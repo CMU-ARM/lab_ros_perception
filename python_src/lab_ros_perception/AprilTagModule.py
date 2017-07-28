@@ -5,8 +5,7 @@ from apriltags_ros.msg import AprilTagDetectionArray
 import time
 import tf2_ros
 import tf2_geometry_msgs
-import numpy as np
-
+import threading
 
 class AprilTagModule(object):
     """Wrapper for AprilTag Node
@@ -19,6 +18,7 @@ class AprilTagModule(object):
         self.detected_tags = {}
         self._tf_buffer = tf2_ros.Buffer()
         listener = tf2_ros.TransformListener(self._tf_buffer)
+        self._callbacks = []
 
     def _tagCallback(self, msg):
 
@@ -28,6 +28,19 @@ class AprilTagModule(object):
             #updated stamped pose
             self.detected_tags[tag_id] = detected.pose
 
+            #fire each callback as a seperate thread
+            for callback in self._callbacks:
+
+                stamped_transform = self._tf_buffer.lookup_transform('base', detected.pose.header.frame_id, rospy.Time(), rospy.Duration(1.0))
+                saved_pose = tf2_geometry_msgs.do_transform_pose(detected.pose, stamped_transform)                
+
+                t = threading.Thread(target=callback, args=(detected.id,saved_pose))
+                t.daemon = True
+                t.start()
+
+    def register_callback(self, callback):
+        self._callbacks.append(callback)
+        return len(self._callbacks) - 1
 
     def getPoseForID(self, id_, duration=None, frame_id=None):
         """
