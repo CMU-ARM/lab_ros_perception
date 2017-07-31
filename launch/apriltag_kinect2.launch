@@ -12,7 +12,6 @@
     <!-- Remap topic required by the node to custom topics -->
     <remap from="image_rect" to="kinect2/qhd/image_color_rect" />
     <remap from="camera_info" to="kinect2/qhd/camera_info" />
-
     <!-- Optional: Subscribe to the compressed stream-->
     <param name="image_transport" type="str" value="compressed" />
 
@@ -29,4 +28,5 @@
     ]
     </rosparam>
   </node>
+
 </launch>
