@@ -1,0 +1,32 @@
+<launch>
+
+
+  <!-- First launch the realsense camera -->
+  <include file="$(find realsense_camera)/launch/sr300_nodelet_rgbd.launch"/>
+
+  <!-- run the tf transformation -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 1.4 1 0 0 0 base kinect2_base_link 100" /> -->
+
+  <!-- automatically run -->
+  <node pkg="apriltags_ros" type="apriltag_detector_node" name="apriltag_detector" output="screen">
+    <!-- Remap topic required by the node to custom topics -->
+    <remap from="image_rect" to="/camera/rgb/image_rect_color" />
+    <remap from="camera_info" to="/camera/rgb/camera_info" />
+    <!-- Optional: Subscribe to the compressed stream-->
+    <param name="image_transport" type="str" value="compressed" />
+
+    <!-- Select the tag family: 16h5, 25h7, 25h9, 36h9, or 36h11(default) -->
+    <param name="tag_family" type="str" value="36h11" />
+
+    <!-- Enable projected optical measurements for more accurate tag transformations -->
+    <!-- This exists for backwards compatability and should be left true for new setups -->
+    <param name="projected_optics" type="bool" value="true" />
+
+    <!-- Describe the tags -->
+    <rosparam param="tag_descriptions">[
+      {id: 0, size: 0.045, frame_id: base}
+    ]
+    </rosparam>
+  </node>
+
+</launch>
