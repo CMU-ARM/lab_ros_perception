@@ -1,12 +1,5 @@
 <launch>
 
-
-  <!-- First launch the kinect2 bridge -->
-  <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" />
-
-  <!-- run the tf transformation -->
-  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 1.4 1 0 0 0 base kinect2_base_link 100" />
-
   <node pkg="tuw_aruco" type="aruco_node" name="arMarkerAruco" output="screen">
     <param name="show_debug_image" value="true"/>
 
@@ -18,8 +11,7 @@
     <param name="publish_fiducials" value="false"/>
     <param name="pose_estimation_enabled" value="true"/>
 
-
-    <remap from="image" to="kinect2/hd/image_color_rect"/>
+    <remap from="image" to="kinect2/hd/image_mono_rect"/>
     <!--<remap from="image" to="kinect2/qhd/image_color_rect"/>-->
     <!--<remap from="camera_info" to="kinect2/qhd/camera_info"/>-->
     <remap from="camera_info" to="kinect2/hd/camera_info"/>
