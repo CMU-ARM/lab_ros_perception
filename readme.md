@@ -24,4 +24,3 @@ stampedPose = tag_module.getPoseForID(0)
 Must launch `apriltag_ros` node before using this. Refer to `apriltag_kinect2.launch` and 'scripts/apriltag_demo.py' for example.
 
 ### ArucoTagModule
-Wrapper around [tuw_marker_detection](https://github.com/tuw-robotics/tuw_marker_detection)
