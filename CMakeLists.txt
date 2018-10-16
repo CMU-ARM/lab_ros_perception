@@ -8,8 +8,6 @@ project(lab_ros_perception)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  apriltags_ros
-  kinect2_bridge
   roscpp
   rospy
 )

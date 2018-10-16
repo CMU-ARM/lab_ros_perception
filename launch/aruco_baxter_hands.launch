@@ -1,0 +1,30 @@
+<launch>
+
+  <env name="ROSCONSOLE_CONFIG_FILE"
+       value="$(find lab_ros_perception)/rosconsole.conf"/>
+
+  <node pkg="lab_ros_aruco" type="lab_ros_aruco_node" name="aruco_node" output="screen">
+    <!-- Types of Tags
+    List of available tags:
+    ARUCO,
+    ARUCO_MIP_25h7,
+    ARUCO_MIP_16h3,
+    ARUCO_MIP_36h12,***  <-recommended
+    ARTAG,
+    ARTOOLKITPLUS,
+    ARTOOLKITPLUSBCH,
+    TAG16h5,TAG25h7,TAG25h9,TAG36h11,TAG36h10, <-april tags 
+    -->
+    <param name="marker_dictonary" value="TAG36h11"/>
+    <!-- Markers length in meters -->
+    <param name="marker_size" value="0.045"/> 
+    
+    <remap from="image" to="/cameras/left_hand_camera/image"/>
+    <remap from="camera_info" to="/cameras/left_hand_camera/camera_info"/>
+
+    <remap from="markers" to="/markersAruco"/>
+  </node>
+
+    <!-- TF transfrom from the robot's camera to the frame -->
+
+</launch>

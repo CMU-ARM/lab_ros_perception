@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from marker_msgs.msg import MarkerDetection
+from lab_ros_aruco.msg import DetectedMarkers
 import time
 import tf2_ros
 import tf2_geometry_msgs
@@ -12,7 +12,7 @@ class ArucoTagModule(object):
     """Wrapper for Aruco Module
     """
     def __init__(self):
-        rospy.Subscriber('/markersAruco', MarkerDetection, self._tagCallback)
+        rospy.Subscriber('/markersAruco', DetectedMarkers, self._tagCallback)
         #dict that stored all seen tags
         self.detected_tags = {}
         self._tf_buffer = tf2_ros.Buffer()
@@ -21,21 +21,24 @@ class ArucoTagModule(object):
 
     def _tagCallback(self, msg):
         for marker in msg.markers:
-            tag_id = marker.ids[0] 
-            #updated stamped pose
-            stampedPose = PoseStamped()
-            stampedPose.header = msg.header
-            stampedPose.pose = marker.pose
-            self.detected_tags[tag_id] = stampedPose
+            tag_id = marker.id 
+
+            #fix the frame id
+            if marker.pose.header.frame_id[0] == '/':
+                marker.pose.header.frame_id = marker.pose.header.frame_id[1:]
+
+            #copy the sampled pose
+            self.detected_tags[tag_id] = marker.pose
+
 
             #fire each callback as a seperate thread
             for callback in self._callbacks:
 
-                stamped_transform = self._tf_buffer.lookup_transform('base', msg.header.frame_id, rospy.Time(), rospy.Duration(1.0))
+                stamped_transform = self._tf_buffer.lookup_transform('base', marker.pose.frame_id, rospy.Time(), rospy.Duration(1.0))
                 #print(marker.pose)
                 saved_pose = tf2_geometry_msgs.do_transform_pose(marker, stamped_transform)                
 
-                t = threading.Thread(target=callback, args=(marker.ids[0], saved_pose))
+                t = threading.Thread(target=callback, args=(marker.id, saved_pose))
                 t.daemon = True
                 t.start()
 

@@ -13,6 +13,9 @@ To install, please do it through the .rosinstall file in [lab_scripts](https://g
 ## Current Modules
 
 ### AprilTagModule
+**(Depreciated!!!!!!!!!)**
+Use `ArucoTagModule` instead for AprilTags
+
 Usage:
 ```
 from lab_ros_perception.AprilTagModule import AprilTagModule
@@ -24,3 +27,14 @@ stampedPose = tag_module.getPoseForID(0)
 Must launch `apriltag_ros` node before using this. Refer to `apriltag_kinect2.launch` and 'scripts/apriltag_demo.py' for example.
 
 ### ArucoTagModule
+Usage:
+```
+from lab_ros_perception.ArucoTagModule import ArucoTagModule
+
+tag_module = ArucoTagModule()
+stampedPose = tag_module.getPoseForID(0)
+stampedPose = tag_module.getPoseForIDs([0,1])
+tag_module.waitForID(0, timout=)
+	
+```
+Must launch `apriltag_ros` node before using this. Refer to `apriltag_kinect2.launch` and 'scripts/apriltag_demo.py' for example.
