@@ -1,6 +1,6 @@
 <launch>
 
-  <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" />
+  <!-- <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" /> -->
 
   <node pkg="lab_ros_aruco" type="lab_ros_aruco_node" name="AruCoMakerNode" output="screen">
    

@@ -12,7 +12,7 @@ class ArucoTagModule(object):
     """Wrapper for Aruco Module
     """
     def __init__(self):
-        rospy.Subscriber('/markersAruco', DetectedMarkers, self._tagCallback)
+        rospy.Subscriber('/AruCoMakerNode/markers', DetectedMarkers, self._tagCallback)
         #dict that stored all seen tags
         self.detected_tags = {}
         self._tf_buffer = tf2_ros.Buffer()
@@ -34,11 +34,11 @@ class ArucoTagModule(object):
             #fire each callback as a seperate thread
             for callback in self._callbacks:
 
-                stamped_transform = self._tf_buffer.lookup_transform('base', marker.pose.frame_id, rospy.Time(), rospy.Duration(1.0))
+                #stamped_transform = self._tf_buffer.lookup_transform('base', marker.pose.header.frame_id, rospy.Time(), rospy.Duration(1.0))
                 #print(marker.pose)
-                saved_pose = tf2_geometry_msgs.do_transform_pose(marker, stamped_transform)                
+                #saved_pose = tf2_geometry_msgs.do_transform_pose(marker, stamped_transform)                
 
-                t = threading.Thread(target=callback, args=(marker.id, saved_pose))
+                t = threading.Thread(target=callback, args=(marker.id, marker.pose))
                 t.daemon = True
                 t.start()
 
